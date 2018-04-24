@@ -230,31 +230,29 @@ module.exports = function (gulp, config) {
 
     //新文件名(md5)
     function reversion(cb) {
-        var revAll = new RevAll({
-            fileNameManifest: 'manifest.json',
-            dontRenameFile: ['.html', '.php'],
-            dontUpdateReference: ['.html'],
-            transformFilename: function (file, hash) {
-                var filename = path.basename(file.path);
-                var ext = path.extname(file.path);
-
-                if (/^\d+\..*\.js$/.test(filename)) {
-                    return filename;
-                } else {
-                    return path.basename(file.path, ext) + '.' + hash.substr(0, 8) + ext;
-                }
-
-            }
-        });
-
         if (config['reversion']) {
             return gulp.src(['./tmp/**/*'])
-                .pipe(revAll.revision())
+                .pipe(RevAll.revision({
+                    fileNameManifest: 'manifest.json',
+                    dontRenameFile: ['.html', '.php'],
+                    dontUpdateReference: ['.html'],
+                    transformFilename: function (file, hash) {
+                        var filename = path.basename(file.path);
+                        var ext = path.extname(file.path);
+        
+                        if (/^\d+\..*\.js$/.test(filename)) {
+                            return filename;
+                        } else {
+                            return path.basename(file.path, ext) + '.' + hash.substr(0, 8) + ext;
+                        }
+        
+                    }
+                }))
                 .pipe(gulp.dest(paths.tmp.dir))
                 .pipe(revDel({
                     exclude: /(.html|.htm)$/
                 }))
-                .pipe(revAll.manifestFile())
+                .pipe(RevAll.manifestFile())
                 .pipe(gulp.dest(paths.tmp.dir));
         } else {
             cb();
