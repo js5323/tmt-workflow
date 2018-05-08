@@ -45,9 +45,10 @@
 
 	"proxy": {
 		"/api": {
-			"target": "https://catalog.amwaynet.com.cn",
-			"changeOrigin": "catalog.amwaynet.com.cn",
+			"target": "https://proxy.com.cn",
+			"changeOrigin": "proxy.com.cn",
 			"secure": false
-		}
+		},
+		"/api2": "http://proxy.com.cn"
 	}
 }
