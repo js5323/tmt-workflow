@@ -41,5 +41,13 @@
 	"supportREM": true,
 	"supportChanged": false,
 	"reversion": true,
-    "SVGGracefulDegradation": true
+    "SVGGracefulDegradation": true,
+
+	"proxy": {
+		"/api": {
+			"target": "https://catalog.amwaynet.com.cn",
+			"changeOrigin": "catalog.amwaynet.com.cn",
+			"secure": false
+		}
+	}
 }

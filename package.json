@@ -11,7 +11,7 @@
     "cheerio": "^0.22.0",
     "crypto-md5": "^1.0.0",
     "del": "^2.2.0",
-    "gulp": "git://github.com/gulpjs/gulp#4.0",
+    "gulp": "^4.0.0",
     "gulp-babel": "^6.1.2",
     "gulp-cssnano": "^2.1.1",
     "gulp-ejs": "^2.1.1",
@@ -37,6 +37,7 @@
     "gulp-util": "^3.0.7",
     "gulp-webp": "^2.3.0",
     "gulp-zip": "^3.2.0",
+    "http-proxy-middleware": "^0.18.0",
     "imagemin-pngquant": "^4.2.2",
     "lodash": "^4.5.1",
     "postcss-pxtorem": "^3.3.1",
@@ -51,10 +52,10 @@
     "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0"
   },
-  "description": "A f2e project workflow based on Gulp",
+  "description": "A f2e project workflow based on Gulp, fork from tmt-workflow",
   "repository": {
     "type": "git",
-    "url": "https://github.com/weixin/tmt-workflow"
+    "url": "https://github.com/js5323/tmt-workflow"
   },
   "keywords": [
     "Workflow",
@@ -70,8 +71,8 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/weixin/tmt-workflow"
+    "url": "https://github.com/js5323/tmt-workflow"
   },
-  "homepage": "https://github.com/weixin/tmt-workflow",
+  "homepage": "https://github.com/js5323/tmt-workflow",
   "readmeFilename": "README.md"
 }
