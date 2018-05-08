@@ -25,9 +25,12 @@
 	//路径相对于 tasks/plugins 目录
 	"plugins": {
 		"build_devAfter": [
+			"copyStaticDev",
 			"TmTIndex"
 		],
-		"build_distAfter": [],
+		"build_distAfter": [
+			"copyStaticDist"
+		],
 		"ftpAfter": [
 			"ftp"
 		]

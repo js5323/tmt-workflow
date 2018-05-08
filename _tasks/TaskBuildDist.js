@@ -73,7 +73,7 @@ var paths = {
         dir: './dist',
         css: './dist/css',
         img: './dist/img',
-        img: './dist/svg',
+        svg: './dist/svg',
         html: './dist/html',
         sprite: './dist/sprite'
     }

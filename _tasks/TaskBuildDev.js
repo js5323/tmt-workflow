@@ -155,30 +155,11 @@ module.exports = function (gulp, config) {
   //启动 livereload
   function startServer() {
 
-    var middleware = [];
-
-    if (config.proxy) {
-      if (typeof config.proxy === 'object') {
-        Object.keys(config.proxy).forEach(function (k) {
-          var option;
-          if (typeof config.proxy[k] === 'string') {
-            option = {
-              target: typeof config.proxy[k]
-            };
-          }
-          if (typeof config.proxy[k] === 'object') {
-            option = config.proxy[k];
-          }
-          option && middleware.push(proxy(k, option))
-        });
-      }
-    }
-
     bs.init({
       // server: paths.dev.dir,
       server: {
         baseDir: paths.dev.dir,
-        middleware: middleware
+        middleware: util.middleware(config)
       },
       port: config['livereload']['port'] || 8080,
       startPath: config['livereload']['startPath'] || '/html',
