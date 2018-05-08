@@ -53,7 +53,7 @@ var paths = {
         media: './src/media/**/*',
         less: './src/css/style-*.less',
         sass: './src/css/style-*.scss',
-        html: ['./src/html/**/*.html', '!./src/html/_*/**.html'],
+        html: ['./src/**/*.html', '!./src/html/_*/**.html'],
         htmlAll: './src/html/**/*',
         php: './src/**/*.php',
         svg: './src/svg/**/*.svg'
@@ -210,8 +210,8 @@ module.exports = function (gulp, config) {
                     })
                 ))
             )
-            .pipe(parseSVG({devPath:'tmp',SVGGracefulDegradation:config.SVGGracefulDegradation}))
-            .pipe(gulp.dest(paths.tmp.html))
+            // .pipe(parseSVG({devPath:'tmp',SVGGracefulDegradation:config.SVGGracefulDegradation}))
+            .pipe(gulp.dest(paths.tmp.dir))
             .pipe(usemin())
             .pipe(gulp.dest(paths.tmp.html));
     }

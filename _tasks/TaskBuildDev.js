@@ -16,7 +16,6 @@ var babel = require('gulp-babel');
 var parseSVG = require('./common/parseSVG');
 var svgSymbol = require('gulp-svg-sprite');
 var rename = require('gulp-rename');
-var proxy = require('http-proxy-middleware');
 
 
 var webpackConfigPath = path.join(process.cwd(), 'webpack.config.js');
@@ -39,9 +38,9 @@ var paths = {
     lessAll: './src/css/**/*.less',
     sass: './src/css/style-*.scss',
     sassAll: './src/css/**/*.scss',
-    html: ['./src/html/**/*.html', '!./src/html/_*/**.html', '!./src/html/_*/**/**.html'],
+    html: ['./src/**/*.html', '!./src/html/_*/**.html', '!./src/html/_*/**/**.html'],
     svg: ['./src/svg/**/*.svg'],
-    htmlAll: './src/html/**/*.html'
+    htmlAll: './src/**/*.html'
   },
   dev: {
     dir: './dev',
@@ -106,8 +105,7 @@ module.exports = function (gulp, config) {
       })
       .pipe(lazyImageCSS({SVGGracefulDegradation: false, imagePath: lazyDir}))
       .pipe(gulp.dest(paths.dev.css))
-      .on('data', function () {
-      })
+      .on('data', function () {})
       .on('end', reloadHandler)
   }
 
@@ -129,8 +127,8 @@ module.exports = function (gulp, config) {
       .pipe(ejs(ejshelper()).on('error', function (error) {
         console.log(error.message);
       }))
-      .pipe(parseSVG({devPath: 'dev'}))
-      .pipe(gulp.dest(paths.dev.html))
+      // .pipe(parseSVG({devPath: './dev'}))
+      .pipe(gulp.dest(paths.dev.dir))
       .on('data', function () {
       })
       .on('end', reloadHandler)
