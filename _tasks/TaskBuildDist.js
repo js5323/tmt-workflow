@@ -23,7 +23,8 @@ var RevAll = require('gulp-rev-all');   // reversion
 var revDel = require('gulp-rev-delete-original');
 var sass = require('gulp-sass');
 var changed = require('./common/changed')();
-var webpack = require('webpack-stream');
+var webpackStream = require('webpack-stream');
+var webpack = require('webpack');
 var babel = require('gulp-babel');
 
 //svg转换用到的组件
@@ -36,7 +37,7 @@ var parseSVG = require('./common/parseSVG');
 var svgToPng = require('./common/svgToPng');
 var svgSymbol = require('gulp-svg-sprite');
 
-var webpackConfigPath = path.join(process.cwd(), 'webpack.config.prod.js');
+var webpackConfigPath = path.join(process.cwd(), 'webpack.prod.conf.js');
 var webpackConfig; // webpack 配置
 var jsPath = path.join(process.cwd(), 'src', 'js');
 
@@ -179,7 +180,7 @@ module.exports = function (gulp, config) {
         return gulp.src(paths.src.js)
             .pipe(gulpif(
                 condition,
-                webpack(webpackConfig),
+                webpackStream(webpackConfig, webpack),
                 babel({
                     presets: ['es2015', 'stage-2']
                 })

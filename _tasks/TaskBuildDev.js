@@ -11,14 +11,15 @@ var lazyImageCSS = require('gulp-lazyimagecss');  // 自动为图片样式添加
 var postcss = require('gulp-postcss');   // CSS 预处理
 var posthtml = require('gulp-posthtml');  // HTML 预处理
 var sass = require('gulp-sass');
-var webpack = require('webpack-stream');
+var webpackStream = require('webpack-stream');
+var webpack = require('webpack');
 var babel = require('gulp-babel');
 var parseSVG = require('./common/parseSVG');
 var svgSymbol = require('gulp-svg-sprite');
 var rename = require('gulp-rename');
 
 
-var webpackConfigPath = path.join(process.cwd(), 'webpack.config.dev.js');
+var webpackConfigPath = path.join(process.cwd(), 'webpack.dev.conf.js');
 var webpackConfig; // webpack 配置
 var jsPath = path.join(process.cwd(), 'src', 'js');
 
@@ -139,10 +140,12 @@ module.exports = function (gulp, config) {
   function compileJs() {
     var condition = webpackConfig ? true : false;
 
+    util.task_log('load webpack config:' + webpackConfigPath);
+
     return gulp.src(paths.src.js)
       .pipe(gulpif(
         condition,
-        webpack(webpackConfig),
+        webpackStream(webpackConfig, webpack),
         babel({
           presets: ['es2015', 'stage-2']
         })
