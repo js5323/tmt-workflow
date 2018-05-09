@@ -18,7 +18,7 @@ var svgSymbol = require('gulp-svg-sprite');
 var rename = require('gulp-rename');
 
 
-var webpackConfigPath = path.join(process.cwd(), 'webpack.config.js');
+var webpackConfigPath = path.join(process.cwd(), 'webpack.config.dev.js');
 var webpackConfig; // webpack 配置
 var jsPath = path.join(process.cwd(), 'src', 'js');
 

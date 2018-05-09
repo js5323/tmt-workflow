@@ -36,7 +36,7 @@ var parseSVG = require('./common/parseSVG');
 var svgToPng = require('./common/svgToPng');
 var svgSymbol = require('gulp-svg-sprite');
 
-var webpackConfigPath = path.join(process.cwd(), 'webpack.config.js');
+var webpackConfigPath = path.join(process.cwd(), 'webpack.config.prod.js');
 var webpackConfig; // webpack 配置
 var jsPath = path.join(process.cwd(), 'src', 'js');
 
