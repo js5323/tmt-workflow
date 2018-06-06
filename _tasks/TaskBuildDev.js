@@ -41,7 +41,7 @@ var paths = {
     sassAll: './src/css/**/*.scss',
     html: ['./src/html/**/*.html', '!./src/html/_*/**.html', '!./src/html/_*/**/**.html'],
     svg: ['./src/svg/**/*.svg'],
-    htmlAll: './src/html/**/*.html'
+    htmlAll: './src/html/**/*.{html,ejs}'
   },
   dev: {
     dir: './dev',
