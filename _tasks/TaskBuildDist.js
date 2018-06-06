@@ -181,9 +181,7 @@ module.exports = function (gulp, config) {
             .pipe(gulpif(
                 condition,
                 webpackStream(webpackConfig, webpack),
-                babel({
-                    presets: ['es2015', 'stage-2']
-                })
+                gulpif(!config.disabledBabel, babel({presets: ['es2015', 'stage-2']}))
             ))
             .pipe(uglify())
             .pipe(gulp.dest(paths.tmp.js));
