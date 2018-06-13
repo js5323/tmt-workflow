@@ -8,24 +8,25 @@ var less = require('gulp-less');
 var util = require('./lib/util');
 var uglify = require('gulp-uglify');
 var usemin = require('gulp-usemin');
-var lazyImageCSS = require('gulp-lazyimagecss');  // 自动为图片样式添加 宽/高/background-size 属性
+var lazyImageCSS = require('gulp-lazyimagecss'); // 自动为图片样式添加 宽/高/background-size 属性
 var minifyCSS = require('gulp-cssnano');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
-var tmtsprite = require('gulp-tmtsprite');   // 雪碧图合并
+var tmtsprite = require('gulp-tmtsprite'); // 雪碧图合并
 var ejshelper = require('tmt-ejs-helper');
-var postcss = require('gulp-postcss');  // CSS 预处理
+var postcss = require('gulp-postcss'); // CSS 预处理
 var postcssPxtorem = require('postcss-pxtorem'); // 转换 px 为 rem
 var postcssAutoprefixer = require('autoprefixer');
 var posthtml = require('gulp-posthtml');
 var posthtmlPx2rem = require('posthtml-px2rem');
-var RevAll = require('gulp-rev-all');   // reversion
+var RevAll = require('gulp-rev-all'); // reversion
 var revDel = require('gulp-rev-delete-original');
 var sass = require('gulp-sass');
 var changed = require('./common/changed')();
 var webpackStream = require('webpack-stream');
 var webpack = require('webpack');
 var babel = require('gulp-babel');
+var pxtoviewport = require('postcss-px-to-viewport');
 
 //svg转换用到的组件
 var fs = require('fs');
@@ -67,8 +68,8 @@ var paths = {
         sprite: './tmp/sprite',
         js: './tmp/js',
         svg: './tmp/svg',
-        symboltemp:'./tmp/symboltemp/',
-        symbol:'./tmp/symbolsvg'
+        symboltemp: './tmp/symboltemp/',
+        symbol: './tmp/symbolsvg'
     },
     dist: {
         dir: './dist',
@@ -83,23 +84,27 @@ var paths = {
 module.exports = function (gulp, config) {
     var webp = require('./common/webp')(config);
 
-    var lazyDir = config.lazyDir || ['../slice','../svg'];
+    var lazyDir = config.lazyDir || ['../slice', '../svg'];
 
-    var postcssOption = [];
+    var postcssOption = [
+        postcssAutoprefixer({
+            browsers: ['last 5 versions']
+        })
+    ];
 
     if (config.supportREM) {
-        postcssOption = [
-            postcssAutoprefixer({browsers: ['last 5 versions']}),
-            postcssPxtorem({
-                root_value: '20', // 基准值 html{ font-zise: 20px; }
-                prop_white_list: [], // 对所有 px 值生效
-                minPixelValue: 2 // 忽略 1px 值
-            })
-        ]
-    } else {
-        postcssOption = [
-            postcssAutoprefixer({browsers: ['last 5 versions']})
-        ]
+        postcssOption.push(postcssPxtorem(config.px2remOption || {
+            root_value: '20', // 基准值 html{ font-zise: 20px; }
+            prop_white_list: [], // 对所有 px 值生效
+            minPixelValue: 2 // 忽略 1px 值
+        }));
+    } else if (config.supportVW) {
+        postcssOption.push(pxtoviewport(config.vwOption || {
+            "viewportWidth": 750,
+            "unitPrecision": 3,
+            "viewportUnit": "vw",
+            "minPixelValue": 1
+        }));
     }
 
     // 清除 dist 目录
@@ -119,9 +124,16 @@ module.exports = function (gulp, config) {
     //编译 less
     function compileLess() {
         return gulp.src(paths.src.less)
-            .pipe(less({relativeUrls: true}))
-            .pipe(lazyImageCSS({SVGGracefulDegradation:config.SVGGracefulDegradation,imagePath: lazyDir}))
-            .pipe(tmtsprite({margin: 4}))
+            .pipe(less({
+                relativeUrls: true
+            }))
+            .pipe(lazyImageCSS({
+                SVGGracefulDegradation: config.SVGGracefulDegradation,
+                imagePath: lazyDir
+            }))
+            .pipe(tmtsprite({
+                margin: 4
+            }))
             .pipe(gulpif('*.png', gulp.dest(paths.tmp.sprite), gulp.dest(paths.tmp.css)));
     }
 
@@ -130,8 +142,13 @@ module.exports = function (gulp, config) {
         return gulp.src(paths.src.sass)
             .pipe(sass())
             .on('error', sass.logError)
-            .pipe(lazyImageCSS({SVGGracefulDegradation:config.SVGGracefulDegradation,imagePath: lazyDir}))
-            .pipe(tmtsprite({margin: 4}))
+            .pipe(lazyImageCSS({
+                SVGGracefulDegradation: config.SVGGracefulDegradation,
+                imagePath: lazyDir
+            }))
+            .pipe(tmtsprite({
+                margin: 4
+            }))
             .pipe(gulpif('*.png', gulp.dest(paths.tmp.sprite), gulp.dest(paths.tmp.css)));
     }
 
@@ -139,7 +156,7 @@ module.exports = function (gulp, config) {
     function compileAutoprefixer() {
         return gulp.src('./tmp/css/style-*.css')
             .pipe(svgInline({
-                maxImageSize: 10*1024*1024,
+                maxImageSize: 10 * 1024 * 1024,
                 extensions: [/.svg/ig],
             }))
             .pipe(postcss(postcssOption))
@@ -170,7 +187,9 @@ module.exports = function (gulp, config) {
 
     //复制媒体文件
     function copyMedia() {
-        return gulp.src(paths.src.media, {base: paths.src.dir}).pipe(gulp.dest(paths.tmp.dir));
+        return gulp.src(paths.src.media, {
+            base: paths.src.dir
+        }).pipe(gulp.dest(paths.tmp.dir));
     }
 
     //编译 JS
@@ -181,7 +200,9 @@ module.exports = function (gulp, config) {
             .pipe(gulpif(
                 condition,
                 webpackStream(webpackConfig, webpack),
-                gulpif(!config.disabledBabel, babel({presets: ['es2015', 'stage-2']}))
+                gulpif(!config.disabledBabel, babel({
+                    presets: ['es2015', 'stage-2']
+                }))
             ))
             .pipe(uglify())
             .pipe(gulp.dest(paths.tmp.js));
@@ -207,9 +228,11 @@ module.exports = function (gulp, config) {
                         rootValue: 20,
                         minPixelValue: 2
                     })
-                ))
-            )
-            .pipe(parseSVG({devPath:'tmp',SVGGracefulDegradation:config.SVGGracefulDegradation}))
+                )))
+            .pipe(parseSVG({
+                devPath: 'tmp',
+                SVGGracefulDegradation: config.SVGGracefulDegradation
+            }))
             .pipe(gulp.dest(paths.tmp.html))
             .pipe(usemin())
             .pipe(gulp.dest(paths.tmp.html));
@@ -238,13 +261,13 @@ module.exports = function (gulp, config) {
                     transformFilename: function (file, hash) {
                         var filename = path.basename(file.path);
                         var ext = path.extname(file.path);
-        
+
                         if (/^\d+\..*\.js$/.test(filename)) {
                             return filename;
                         } else {
                             return path.basename(file.path, ext) + '.' + hash.substr(0, 8) + ext;
                         }
-        
+
                     }
                 }))
                 .pipe(gulp.dest(paths.tmp.dir))
@@ -259,17 +282,17 @@ module.exports = function (gulp, config) {
     }
 
     function miniSVG() {
-        if(config.SVGGracefulDegradation){
+        if (config.SVGGracefulDegradation) {
             return gulp.src(paths.src.svg)
-               .pipe(svgmin({
-                    plugins: [{ 
-                        convertPathData: true 
+                .pipe(svgmin({
+                    plugins: [{
+                        convertPathData: true
                     }, {
                         removeTitle: true
                     }, {
-                        mergePaths: false 
-                    }, { 
-                        removeUnknownsAndDefaults: false 
+                        mergePaths: false
+                    }, {
+                        removeUnknownsAndDefaults: false
                     }, {
                         removeDoctype: true
                     }, {
@@ -285,19 +308,19 @@ module.exports = function (gulp, config) {
                         }
                     }]
                 }))
-               .pipe(svgToPng())
-               .pipe(gulp.dest(paths.tmp.svg));
-        }else{
+                .pipe(svgToPng())
+                .pipe(gulp.dest(paths.tmp.svg));
+        } else {
             return gulp.src(paths.src.svg)
-               .pipe(svgmin({
-                    plugins: [{ 
-                        convertPathData: true 
+                .pipe(svgmin({
+                    plugins: [{
+                        convertPathData: true
                     }, {
                         removeTitle: true
                     }, {
-                        mergePaths: false 
-                    }, { 
-                        removeUnknownsAndDefaults: false 
+                        mergePaths: false
+                    }, {
+                        removeUnknownsAndDefaults: false
                     }, {
                         removeDoctype: true
                     }, {
@@ -313,27 +336,27 @@ module.exports = function (gulp, config) {
                         }
                     }]
                 }))
-               .pipe(gulp.dest(paths.tmp.svg));
+                .pipe(gulp.dest(paths.tmp.svg));
         }
     }
 
-    function svgSymbols(){
+    function svgSymbols() {
         return gulp.src(paths.tmp.symboltemp + '**/*.svg')
             .pipe(svgSymbol({
-                mode:{
-                    inline:true,
-                    symbol:true
+                mode: {
+                    inline: true,
+                    symbol: true
                 },
-                shape:{
-                    id:{
-                        generator:function(id){
-                            var ids = id.replace(/.svg/ig,'');
+                shape: {
+                    id: {
+                        generator: function (id) {
+                            var ids = id.replace(/.svg/ig, '');
                             return ids;
                         }
                     }
                 }
             }))
-            .pipe(rename(function (path){
+            .pipe(rename(function (path) {
                 path.dirname = './';
                 path.basename = 'symbol';
             }))
@@ -344,7 +367,9 @@ module.exports = function (gulp, config) {
     function findChanged(cb) {
 
         if (!config['supportChanged']) {
-            return gulp.src('./tmp/**/*', {base: paths.tmp.dir})
+            return gulp.src('./tmp/**/*', {
+                    base: paths.tmp.dir
+                })
                 .pipe(gulp.dest(paths.dist.dir))
                 .on('end', function () {
                     delTmp();
@@ -386,7 +411,9 @@ module.exports = function (gulp, config) {
                     });
                 }
 
-                return gulp.src(tmpSrc, {base: paths.tmp.dir})
+                return gulp.src(tmpSrc, {
+                        base: paths.tmp.dir
+                    })
                     .pipe(gulp.dest(paths.dist.dir))
                     .on('end', function () {
                         delTmp();
@@ -431,4 +458,3 @@ module.exports = function (gulp, config) {
         loadPlugin
     ));
 };
-
