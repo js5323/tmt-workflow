@@ -87,9 +87,7 @@ module.exports = function (gulp, config) {
     var lazyDir = config.lazyDir || ['../slice', '../svg'];
 
     var postcssOption = [
-        postcssAutoprefixer({
-            browsers: ['last 5 versions']
-        })
+        postcssAutoprefixer({ browsers: ['last 5 versions'] }),
     ];
 
     if (config.supportREM) {
@@ -154,6 +152,7 @@ module.exports = function (gulp, config) {
 
     //自动补全
     function compileAutoprefixer() {
+        // console.log(postcssOption);
         return gulp.src('./tmp/css/style-*.css')
             .pipe(svgInline({
                 maxImageSize: 10 * 1024 * 1024,
@@ -204,7 +203,9 @@ module.exports = function (gulp, config) {
                     presets: ['es2015', 'stage-2']
                 }))
             ))
-            .pipe(uglify())
+            .pipe(uglify({
+                drop_console: true
+            }))
             .pipe(gulp.dest(paths.tmp.js));
     }
 
