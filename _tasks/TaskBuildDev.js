@@ -377,7 +377,7 @@ module.exports = function (gulp, config) {
     }
 
   function staticCopyHandle(cb) {
-    util.exists('./static', config.dev.dir, util.copy);
+    util.exists('./static', paths.dev.dir, util.copy);
     cb();
   }
 
