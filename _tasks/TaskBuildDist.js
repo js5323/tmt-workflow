@@ -436,6 +436,11 @@ module.exports = function (gulp, config) {
         cb();
     }
 
+    function staticCopyHandle(cb) {
+      util.exists('./static','./tmp', util.copy);
+      cb();
+    }
+
     //注册 build_dist 任务
     gulp.task('build_dist', gulp.series(
         delDist,
@@ -450,6 +455,7 @@ module.exports = function (gulp, config) {
         compileAutoprefixer,
         imageminSprite,
         miniCSS,
+        staticCopyHandle,
         compileHtml,
         svgSymbols,
         reversion,

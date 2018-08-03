@@ -376,10 +376,16 @@ module.exports = function (gulp, config) {
         cb();
     }
 
+  function staticCopyHandle(cb) {
+    util.exists('./static', config.dev.dir, util.copy);
+    cb();
+  }
+
     //注册 build_dev 任务
     gulp.task('build_dev', gulp.series(
         delDev,
         gulp.parallel(
+            staticCopyHandle,
             copyImg,
             copySlice,
             compileJs,
