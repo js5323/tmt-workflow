@@ -120,7 +120,10 @@ var tmt_util = {
     //读取目录
     fs.readdir(src,function(err,paths){
       if(err){
-        throw err;
+        console.log('error...')
+        console.log(err)
+        // throw err;
+        return;
       }
       paths.forEach(function(path){
         var _src=src+'/'+path;
