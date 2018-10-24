@@ -225,9 +225,10 @@ module.exports = function (gulp, config) {
             .pipe(gulpif(
                 config.supportREM,
                 posthtml(
-                    posthtmlPx2rem({
-                        rootValue: 20,
-                        minPixelValue: 2
+                    posthtmlPx2rem(config.px2remOption || {
+                      root_value: '20', // 基准值 html{ font-zise: 20px; }
+                      prop_white_list: [], // 对所有 px 值生效
+                      minPixelValue: 2 // 忽略 1px 值
                     })
                 )))
             .pipe(parseSVG({
@@ -452,9 +453,9 @@ module.exports = function (gulp, config) {
             compileJs,
             miniSVG
         ),
-        compileAutoprefixer,
         imageminSprite,
         miniCSS,
+      compileAutoprefixer,
         staticCopyHandle,
         compileHtml,
         svgSymbols,
