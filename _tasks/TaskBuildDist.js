@@ -170,7 +170,8 @@ module.exports = function (gulp, config) {
                 reduceTransforms: false,
                 advanced: false,
                 compatibility: 'ie7',
-                keepSpecialComments: 0
+                keepSpecialComments: 0,
+                autoprefixer: false,
             }))
             .pipe(gulp.dest('./tmp/css/'));
     }
@@ -453,9 +454,9 @@ module.exports = function (gulp, config) {
             compileJs,
             miniSVG
         ),
+        compileAutoprefixer,
         imageminSprite,
         miniCSS,
-      compileAutoprefixer,
         staticCopyHandle,
         compileHtml,
         svgSymbols,
