@@ -1,0 +1,25 @@
+{
+  "name": "www.ulinkvip.com",
+  "version": "1.0.0",
+  "description": "ulinkvip.com 官网",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@122.114.96.105:22000/istarcore/CNC-official.git"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.3.1",
+    "jquery.scrollto": "^2.1.2",
+    "swiper": "^4.4.2"
+  },
+  "author": "js5323",
+  "license": "ISC",
+  "devDependencies": {
+    "imports-loader": "^0.8.0",
+    "script-loader": "^0.7.2"
+  }
+}

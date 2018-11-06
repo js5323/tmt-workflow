@@ -1,0 +1,57 @@
+{
+  "ftp": {
+    "host": "xx.xx.xx.xx",
+    "port": "8021",
+    "user": "tmt",
+    "pass": "password",
+    "remotePath": "remotePath",
+    "includeHtml": true
+    //ftp 上传是否包含 html
+  },
+  "sftp": {
+    "host": "xx.xx.xx.xx",
+    "port": "xx",
+    "user": "tmt",
+    "password": "password",
+    "remotePath": "",
+    "includeHtml": true
+  },
+  "livereload": {
+    "available": true,
+    //开启自动刷新
+    "port": 9001
+  },
+  //路径相对于 tasks/plugins 目录
+  "plugins": {
+    "build_devAfter": [
+      "TmTIndex"
+    ],
+    "build_distAfter": [
+      "distToRoot"
+    ],
+    "ftpAfter": [
+      "ftp"
+    ]
+  },
+  "lazyDir": [
+    "../slice"
+  ],
+  //gulp-lazyImageCSS 寻找目录(https://github.com/weixin/gulp-lazyimagecss)
+
+  "supportWebp": false,
+  "supportREM": false,
+  "px2remOption": {
+    "root_value": "75",
+    "prop_white_list": [],
+    "minPixelValue": 2
+  },
+  "supportVW": false,
+  "vwOption": {
+      "viewportWidth": 750,
+      "unitPrecision": 3,
+      "viewportUnit": "vw",
+      "minPixelValue": 1
+  },
+  "supportChanged": false,
+  "reversion": false
+}
