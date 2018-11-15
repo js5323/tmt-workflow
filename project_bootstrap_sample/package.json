@@ -11,6 +11,7 @@
     "url": "ssh://git@122.114.96.105:22000/istarcore/CNC-official.git"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.3.7",
     "jquery": "^3.3.1",
     "jquery.scrollto": "^2.1.2",

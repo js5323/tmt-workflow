@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var glob = require('glob');
+var es3ifyPlugin = require('es3ify-webpack-plugin');
 
 const getEntries = function (globPath) {
   var entries = {}
@@ -52,6 +53,7 @@ module.exports = {
     //   "window.$": "jquery",
     //   "window.jQuery": "jquery"
     // }),
+    new es3ifyPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function (module, count) {

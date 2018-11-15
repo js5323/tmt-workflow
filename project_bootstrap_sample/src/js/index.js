@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import $ from 'jquery'
 import('imports-loader?$=jquery!jquery.scrollto');
 import Swiper from 'swiper/dist/js/swiper.min'
