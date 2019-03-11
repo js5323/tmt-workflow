@@ -120,7 +120,6 @@ var tmt_util = {
     //读取目录
     fs.readdir(src,function(err,paths){
       if(err){
-        console.log('error...')
         console.log(err)
         // throw err;
         return;

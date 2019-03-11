@@ -152,7 +152,6 @@ module.exports = function (gulp, config) {
 
   //自动补全
   function compileAutoprefixer() {
-    // console.log(postcssOption);
     return gulp.src('./tmp/css/style-*.css')
       .pipe(svgInline({
         maxImageSize: 10 * 1024 * 1024,
@@ -476,3 +475,4 @@ module.exports = function (gulp, config) {
     loadPlugin
   ));
 };
+

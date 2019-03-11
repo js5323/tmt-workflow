@@ -43,7 +43,7 @@ var paths = {
         sass: './src/css/style-*.scss',
         sassAll: './src/css/**/*.scss',
         html: ['./src/html/**/*.html', '!./src/html/_*/**.html', '!./src/html/_*/**/**.html'],
-        svg: ['./src/svg/**/*.svg'],
+        svg: './src/svg/**/*.svg',
         htmlAll: './src/html/**/*.{html,ejs}'
     },
     dev: {
@@ -190,7 +190,6 @@ module.exports = function (gulp, config) {
 
     //启动 livereload
     function startServer() {
-
         bs.init({
             // server: paths.dev.dir,
             server: {
@@ -200,7 +199,7 @@ module.exports = function (gulp, config) {
             port: config['livereload']['port'] || 8080,
             startPath: config['livereload']['startPath'] || '/html',
             reloadDelay: 0,
-            notify: { //自定制livereload 提醒条
+            notify: {      //自定制livereload 提醒条
                 styles: [
                     "margin: 0",
                     "padding: 5px",
@@ -349,9 +348,9 @@ module.exports = function (gulp, config) {
             paths.src.lessAll,
             paths.src.sassAll,
             paths.src.htmlAll
-        ], {
-            ignored: /[\/\\]\./
-        });
+        ],
+            { ignored: /[\/\\]\./ }
+        );
 
         watcher
             .on('change', function (file) {
