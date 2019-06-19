@@ -206,14 +206,14 @@ module.exports = function (gulp, config) {
       .pipe(uglify({
         compress: {
           properties: false,
-          warnings: false
+          warnings: false,
+          drop_console: true
         },
         output: {
           beautify: true,
           quote_keys: true
         },
-        sourceMap: false,
-        drop_console: true
+        sourceMap: false
       }))
       .pipe(gulp.dest(paths.tmp.js));
   }
